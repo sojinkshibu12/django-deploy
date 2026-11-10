@@ -1,6 +1,11 @@
+
 name: Backend Build & Push
 
 on:
+  push:
+    branches:
+      - main
+
   workflow_dispatch:
 
 jobs:
@@ -9,11 +14,6 @@ jobs:
 
     permissions:
       contents: read
-
-    defaults:
-      run:
-        shell: bash
-        working-directory: backend
 
     steps:
       - name: Checkout Code
@@ -24,15 +24,15 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          aws-region: ap-south-2
 
       - name: Login to ECR
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Build and Push
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v6
         with:
-          context: backend
-          path: backend/Dockerfile
+          context: ./backend
+          file: ./backend/Dockerfile
           push: true
           tags: 119640367200.dkr.ecr.ap-south-2.amazonaws.com/dev/backend:${{ github.run_number }}
