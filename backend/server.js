@@ -7,7 +7,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const REGION = process.env.AWS_REGION || "us-east-1";
+const REGION ="ap-south-2";
 const ssm = new SSMClient({ region: REGION });
 
 let db;
